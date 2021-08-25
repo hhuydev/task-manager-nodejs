@@ -1,0 +1,23 @@
+Lưu ý: Sử dụng variable và authorization trong Postman
+
+1) variable
++Tạo môi trường dev -> rồi tạo biến url {url: http...} 
++Chuyển sang môi trường dev -> đổi localhost thành url -> Vd: localhost:3000/users thành {{url}}/users
+->Lợi ý: nếu deploy lên server thì k cần đổi url từng api chỉ cần vô biến môi trường đỏi.
+
+2) Authorization trong Postman
++Vô edit project ở mục Auhthorization -> mục type -> Bearer Token -> tự điền tên biến vd: authToken
++Chỉ có 2 api là create, login là k cần Authorization mà là Authentication -> sửa lại tab
+Atuh thành No Auth
++Thêm code ở 2 api create, login ở tab Tests 
+login: 
+    if(pm.response.code === 200) {
+        pm.environment.set('authToken', pm.response.json().token)
+    }
+create: 
+    if(pm.response.code === 201) {
+        pm.environment.set('authToken', pm.response.json().token)
+    }
+-> Mục đích là để tất cả api khác đều cần Authorization nên ta set cho project là Brearer Token,
+thêm code cho 2 api create, login nhằm đề tự động Authorization nếu chưa có Token
+Vd: Khi user chưa đăng nhập mà vô api /users/me để xem thông tin.
