@@ -12,11 +12,13 @@ const auth = async (req, res, next) => {
       _id: decoded._id,
       "tokens.token": token,
     });
-    if (!user) res.status(404).send({ error: "User is invalid!" });
+    if (!user) throw new Error();
     // console.log(req.user);
 
     /**Lưu thông tin user lại req và gửi lại route*/
     req.user = user;
+    /**Lưu thông tin token lại req và gửi lại route*/
+    req.token = token;
     next();
   } catch (error) {
     res.status(401).send({ error: "Please Authenticate!" });
