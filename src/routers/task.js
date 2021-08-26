@@ -21,16 +21,29 @@ router.post("/tasks", auth, async (req, res) => {
   }
 });
 
+// Vd: localhost:3000/tasks?completed=true
 router.get("/tasks", auth, async (req, res) => {
   try {
     /**Cach 1 get task theo user id */
-    const tasks = await Task.find({ owner: req.user._id });
-    res.status(200).send(tasks);
+    // const tasks = await Task.find({
+    //   owner: req.user._id,
+    // });
+    // res.status(200).send(tasks);
 
     /**Cach 2 get task theo user id */
-    // await User.findOne({ _id: req.user._id });
-    // await req.user.populate("tasks").execPopulate();
-    // res.status(200).send(req.user.tasks);
+    /**Thêm query tasks có điều kiện completed*/
+    const match = {};
+    /**Kiểm tra trên url query có completed không - nếu không nghĩa là lấy hết*/
+    if (req.query.completed) {
+      match.completed = req.query.completed === "true";
+    }
+    await req.user
+      .populate({
+        path: "tasks",
+        match,
+      })
+      .execPopulate();
+    res.status(200).send(req.user.tasks);
   } catch (error) {
     res.status(500).send(err);
   }
