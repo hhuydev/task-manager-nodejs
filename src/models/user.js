@@ -4,48 +4,53 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Task = require("./task");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    required: true,
-    validate(value) {
-      if (!validator.isEmail(value)) throw new Error("Email is invalid!");
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
     },
-  },
-  age: {
-    type: Number,
-    default: 1,
-    validate(value) {
-      if (value < 0) throw new Error("Age must greater than 0!");
-    },
-  },
-  password: {
-    type: String,
-    trim: true,
-    minLength: 7,
-    required: true,
-    validate(value) {
-      if (value.toLowerCase().includes("password"))
-        throw new Error("Password is invalid!");
-    },
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    email: {
+      type: String,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      required: true,
+      validate(value) {
+        if (!validator.isEmail(value)) throw new Error("Email is invalid!");
       },
     },
-  ],
-});
+    age: {
+      type: Number,
+      default: 1,
+      validate(value) {
+        if (value < 0) throw new Error("Age must greater than 0!");
+      },
+    },
+    password: {
+      type: String,
+      trim: true,
+      minLength: 7,
+      required: true,
+      validate(value) {
+        if (value.toLowerCase().includes("password"))
+          throw new Error("Password is invalid!");
+      },
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 /**Dùng virtual để tạo relationship những k ảnh hưởng đến data trong db
  * chủ yếu để query data
