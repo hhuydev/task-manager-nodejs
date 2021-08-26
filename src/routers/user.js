@@ -70,19 +70,21 @@ router.get("/users/me", auth, async (req, res) => {
   // }
 });
 
-router.get("/users/:id", async (req, res) => {
-  /**Mongoose tu dong parse string sang new ObjectId()*/
-  const _id = req.params.id;
-  try {
-    const user = await User.findById({ _id });
-    if (!user) res.status(404).send("User not found!");
-    res.send(user);
-  } catch (error) {
-    res.status(500).send();
-  }
-});
+/**Thay the bang get(/users/me) */
+// router.get("/users/:id", async (req, res) => {
+//   /**Mongoose tu dong parse string sang new ObjectId()*/
+//   const _id = req.params.id;
+//   try {
+//     const user = await User.findById({ _id });
+//     if (!user) res.status(404).send("User not found!");
+//     res.send(user);
+//   } catch (error) {
+//     res.status(500).send();
+//   }
+// });
 
-router.patch("/users/:id", async (req, res) => {
+/**Update user thong qua middleware bang data token */
+router.patch("/users/me", auth, async (req, res) => {
   /**Object.keys() -> return array  */
   const updates = Object.keys(req.body);
   const allowedUdpates = ["name", "age", "email", "password"];
@@ -92,7 +94,8 @@ router.patch("/users/:id", async (req, res) => {
   );
   if (!isValidOperation) res.status(404).send({ error: "Invalid updates!" });
   try {
-    const updateUser = await User.findById(req.params.id);
+    // const updateUser = await User.findById(req.params.id);
+    const updateUser = req.user;
     updates.forEach((update) => (updateUser[update] = req.body[update]));
     await updateUser.save();
     /**new: true -> trả về dối tượng mới update so vs đối tượng cũ
@@ -108,11 +111,14 @@ router.patch("/users/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
-router.delete("/users/:id", async (req, res) => {
+/**Xoa user thong qua middleware du lieu tu token */
+router.delete("/users/me", auth, async (req, res) => {
   try {
-    const deleteUser = await User.findByIdAndDelete(req.params.id);
-    if (!deleteUser) return res.status(404).send({ error: "User not found!" });
-    res.status(200).send(deleteUser);
+    // const deleteUser = await User.findByIdAndDelete(req.params.id);
+    // if (!deleteUser) return res.status(404).send({ error: "User not found!" });
+    // res.status(200).send(deleteUser);
+    await req.user.remove();
+    res.send(req.user);
   } catch (error) {
     res.status(500).send(error);
   }
