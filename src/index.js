@@ -74,16 +74,16 @@ app.listen(port, () => {
 const Task = require("../src/models/task");
 const User = require("../src/models/user");
 
-const main = async () => {
-  // /**Tìm task theo id */
-  // const task = await Task.findById("61275fa08ae4bb3e045800be");
-  // /**Tìm toàn bộ thông tin user thông qua owner task */
-  // await task.populate("owner").execPopulate();
-  // console.log(task.owner);
+// const main = async () => {
+//   // /**Tìm task theo id */
+//   // const task = await Task.findById("61275fa08ae4bb3e045800be");
+//   // /**Tìm toàn bộ thông tin user thông qua owner task */
+//   // await task.populate("owner").execPopulate();
+//   // console.log(task.owner);
 
-  const user = await User.findById("61275b8de61aa50d2c04d747");
-  // /**Tìm toàn bộ thông tin tasks của user */
-  await user.populate("tasks").execPopulate();
-  console.log(user.tasks);
-};
-main();
+//   const user = await User.findById("61275b8de61aa50d2c04d747");
+//   // /**Tìm toàn bộ thông tin tasks của user */
+//   await user.populate("tasks").execPopulate();
+//   console.log(user.tasks);
+// };
+// main();
