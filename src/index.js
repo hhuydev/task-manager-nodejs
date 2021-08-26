@@ -48,6 +48,25 @@ app.use(taskRouter);
 // };
 
 // myFucntion();
+
+/**Test custom toJSON method to hide data */
+// const myInfo = {
+//   name: "ha gia huy",
+//   age: 21,
+//   email: "huy@gmail.com",
+//   major: "student",
+//   gender: "male",
+// };
+
+// myInfo.toJSON = function () {
+//   console.log(this);
+//   delete this.major;
+//   delete this.male;
+//   return { name: "gia huy", age: "21", email: "huy@gmail.com" };
+// };
+
+// console.log(JSON.stringify(myInfo));
+// console.log(myInfo);
 app.listen(port, () => {
   console.log("Server is running on port " + port);
 });

@@ -46,6 +46,17 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+/**Dùng hàm toJSON mặc định để custom data trả về client đề bên route không cần khai báo hàm*/
+userSchema.methods.toJSON = function () {
+  /**Dùng toObject() do mongoose cấp để trả về kiểu obj js */
+  const userObject = this.toObject();
+  /**Ẩn đi password, tokens khi gửi về client*/
+  delete userObject.password;
+  delete userObject.tokens;
+
+  return userObject;
+};
+
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, "thisissecretkey");
