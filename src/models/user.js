@@ -46,6 +46,18 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+/**Dùng virtual để tạo relationship những k ảnh hưởng đến data trong db
+ * chủ yếu để query data
+ * ref: tham chiếu đến Task
+ * localField: id của user (khóa chính)
+ *  foreignField: khóa ngoại của task đến user
+ */
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner",
+});
+
 /**Dùng hàm toJSON mặc định để custom data trả về client đề bên route không cần khai báo hàm*/
 userSchema.methods.toJSON = function () {
   /**Dùng toObject() do mongoose cấp để trả về kiểu obj js */
