@@ -1,4 +1,4 @@
-Lưu ý: Sử dụng variable và authorization trong Postman
+***Lưu ý: Sử dụng variable và authorization trong Postman
 
 1) variable
 +Tạo môi trường dev -> rồi tạo biến url {url: http...} 
@@ -21,3 +21,13 @@ create:
 -> Mục đích là để tất cả api khác đều cần Authorization nên ta set cho project là Brearer Token,
 thêm code cho 2 api create, login nhằm đề tự động Authorization nếu chưa có Token
 Vd: Khi user chưa đăng nhập mà vô api /users/me để xem thông tin.
+
+=====================================================================================================
+
+***Lưu ý làm paginate 
++Sẽ có 2 tham số là: limit (sl sp yêu cầu) & skip (ngắt trang)
++Cách tính skip: bằng số sp các trước.
+Vd: 3 sản phẩm ở trang đầu: .../products?limit=3&skip=0
+Vd: 3 sản phẩm ở trang hai: .../products?limit=3&skip=3
+Vd: 1 sản phẩm ở trang ba: .../products?limit=1&skip=6
+

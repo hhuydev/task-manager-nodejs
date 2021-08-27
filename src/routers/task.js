@@ -22,6 +22,8 @@ router.post("/tasks", auth, async (req, res) => {
 });
 
 // Vd: localhost:3000/tasks?completed=true
+// Vd: localhost:3000/tasks?limit=10
+// Vd: localhost:3000/sortBy=createdBy:desc
 router.get("/tasks", auth, async (req, res) => {
   try {
     /**Cach 1 get task theo user id */
@@ -33,14 +35,27 @@ router.get("/tasks", auth, async (req, res) => {
     /**Cach 2 get task theo user id */
     /**Thêm query tasks có điều kiện completed*/
     const match = {};
+    /**Thêm query sort có điều kiện createdBy*/
+    const sort = {};
     /**Kiểm tra trên url query có completed không - nếu không nghĩa là lấy hết*/
     if (req.query.completed) {
       match.completed = req.query.completed === "true";
+    }
+    /**Kiểm tra trên url query có sortBy không - nếu không nghĩa là lấy hết*/
+    if (req.query.sortBy) {
+      const part = req.query.sortBy.split(":");
+      /**Kiểm tra nếu đúng sort tăng dần và ngược lại */
+      sort[part[0]] = part[1] === "asc" ? 1 : -1;
     }
     await req.user
       .populate({
         path: "tasks",
         match,
+        options: {
+          limit: parseInt(req.query.limit),
+          skip: parseInt(req.query.skip),
+          sort,
+        },
       })
       .execPopulate();
     res.status(200).send(req.user.tasks);
