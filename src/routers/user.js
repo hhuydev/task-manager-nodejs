@@ -135,20 +135,25 @@ const upload = multer({
   /**request - file - callback */
   fileFilter(req, file, cb) {
     /**Chi chap nhan file doc,docx,pdf */
-    if (!file.originalname.match(/\.(doc|docx|pdf)$/))
-      return cb(new Error("Just upload world and pdf file!"));
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+      return cb(new Error("Just upload imgage file!"));
     cb(undefined, true);
   },
 });
+
 /**Sử dụng middleware single() để lưu dữ liệu fomrdata trên postman. Key ở trong hàm single() bắt buộc
  * phải trùng key trên formdata postman
  */
-router.post("/users/me/avatar", upload.single("avatar"), async (req, res) => {
-  try {
+router.post(
+  "/users/me/avatar",
+  upload.single("avatar"),
+  async (req, res) => {
     await res.send();
-  } catch (error) {
-    res.status(500).send({ error: "Can not send avatar" });
+  },
+  /**Xu ly error middleware cho ngan gon hon */
+  (err, req, res, next) => {
+    res.status(400).send({ error: err.message });
   }
-});
+);
 
 module.exports = router;

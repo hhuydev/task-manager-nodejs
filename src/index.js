@@ -87,3 +87,34 @@ app.listen(port, () => {
 //   console.log(user.tasks);
 // };
 // main();
+
+const multer = require("multer");
+const upload = multer({
+  dest: "avatar",
+  limits: {
+    fileSize: 1000000,
+  },
+
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+      return cb(new Error("Just upload imgage file!"));
+    cb(undefined, true);
+  },
+});
+
+/**Custom middleware fucntion */
+const errorMiddleware = (req, res, next) => {
+  throw new Error("From my middleware!");
+};
+
+app.post(
+  "/upload",
+  errorMiddleware,
+  async (req, res) => {
+    res.send();
+  },
+  /**Xu ly custom middleware fucntion */
+  (err, req, res, next) => {
+    res.status(400).send({ error: err.message });
+  }
+);
