@@ -128,6 +128,17 @@ router.delete("/users/me", auth, async (req, res) => {
 /**Chỉ ra thư mục lưu file */
 const upload = multer({
   dest: "avatar",
+  limits: {
+    fileSize: 1000000, // ~ 1mb
+  },
+  /**Validate file truoc khi gui */
+  /**request - file - callback */
+  fileFilter(req, file, cb) {
+    /**Chi chap nhan file doc,docx,pdf */
+    if (!file.originalname.match(/\.(doc|docx|pdf)$/))
+      return cb(new Error("Just upload world and pdf file!"));
+    cb(undefined, true);
+  },
 });
 /**Sử dụng middleware single() để lưu dữ liệu fomrdata trên postman. Key ở trong hàm single() bắt buộc
  * phải trùng key trên formdata postman
