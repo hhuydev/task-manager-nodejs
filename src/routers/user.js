@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
+const multer = require("multer");
 
 const router = new express.Router();
 
@@ -121,6 +122,21 @@ router.delete("/users/me", auth, async (req, res) => {
     res.send(req.user);
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+/**Chỉ ra thư mục lưu file */
+const upload = multer({
+  dest: "avatar",
+});
+/**Sử dụng middleware single() để lưu dữ liệu fomrdata trên postman. Key ở trong hàm single() bắt buộc
+ * phải trùng key trên formdata postman
+ */
+router.post("/users/me/avatar", upload.single("avatar"), async (req, res) => {
+  try {
+    await res.send();
+  } catch (error) {
+    res.status(500).send({ error: "Can not send avatar" });
   }
 });
 
