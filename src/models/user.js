@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    /**Chua image duoi dang nhi phan */
+    avatar: {
+      type: Buffer,
+    },
   },
   {
     timestamps: true,

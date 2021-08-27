@@ -127,7 +127,8 @@ router.delete("/users/me", auth, async (req, res) => {
 
 /**Chỉ ra thư mục lưu file */
 const upload = multer({
-  dest: "avatar",
+  /**Tạm thời đóng để request có thể đọc dc file ảnh */
+  // dest: "avatar",
   limits: {
     fileSize: 1000000, // ~ 1mb
   },
@@ -146,8 +147,13 @@ const upload = multer({
  */
 router.post(
   "/users/me/avatar",
+  auth,
   upload.single("avatar"),
   async (req, res) => {
+    /**Luu thong tin img vao user dc validate qua token */
+    req.user.avatar = req.file.buffer;
+    /**Luu thong tin request user dc validate qua token */
+    await req.user.save();
     await res.send();
   },
   /**Xu ly error middleware cho ngan gon hon */
@@ -155,5 +161,18 @@ router.post(
     res.status(400).send({ error: err.message });
   }
 );
+
+router.delete("/users/me/avatar", auth, async (req, res) => {
+  try {
+    /**Sua gia tri user thong qua req = token*/
+    req.user.avatar = undefined;
+    /**Luu user thong qua req = token*/
+    await req.user.save();
+    res.status(200).send({ mess: "Deleted user avatar" });
+  } catch (error) {
+    res.send({ mess: "Deleted user avatar" });
+    res.status(500).send({ error: "Failed to delete user avatar!" });
+  }
+});
 
 module.exports = router;
