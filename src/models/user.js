@@ -72,9 +72,10 @@ userSchema.virtual("tasks", {
 userSchema.methods.toJSON = function () {
   /**Dùng toObject() do mongoose cấp để trả về kiểu obj js */
   const userObject = this.toObject();
-  /**Ẩn đi password, tokens khi gửi về client*/
+  /**Ẩn đi password, tokens, avatar khi gửi về client*/
   delete userObject.password;
   delete userObject.tokens;
+  delete userObject.avatar;
 
   return userObject;
 };
