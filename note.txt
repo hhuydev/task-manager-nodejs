@@ -29,5 +29,8 @@ Vd: Khi user chưa đăng nhập mà vô api /users/me để xem thông tin.
 +Cách tính skip: bằng số sp các trước.
 Vd: 3 sản phẩm ở trang đầu: .../products?limit=3&skip=0
 Vd: 3 sản phẩm ở trang hai: .../products?limit=3&skip=3
-Vd: 1 sản phẩm ở trang ba: .../products?limit=1&skip=6
+Vd: 1 sản phẩm ở trang ba: .../products?limit=1&skip=
+
+***Lưu ý hiển thị ảnh khi dc lưu dạng nhị phân
+<img src='data:image/jpg;base64,(...mã nhị phân)'
 

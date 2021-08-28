@@ -6,7 +6,7 @@ const taskRouter = require("./routers/task");
 const app = express();
 
 /**Config port nếu deploy server thì dùng port server || port localhost*/
-const port = process.env.port || 3000;
+const port = process.env.PORT;
 
 /**Config express khi co request den thi data se parse json sang object*/
 app.use(express.json());
@@ -88,33 +88,33 @@ app.listen(port, () => {
 // };
 // main();
 
-const multer = require("multer");
-const upload = multer({
-  dest: "avatar",
-  limits: {
-    fileSize: 1000000,
-  },
+// const multer = require("multer");
+// const upload = multer({
+//   dest: "avatar",
+//   limits: {
+//     fileSize: 1000000,
+//   },
 
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
-      return cb(new Error("Just upload imgage file!"));
-    cb(undefined, true);
-  },
-});
+//   fileFilter(req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+//       return cb(new Error("Just upload imgage file!"));
+//     cb(undefined, true);
+//   },
+// });
 
-/**Custom middleware fucntion */
-const errorMiddleware = (req, res, next) => {
-  throw new Error("From my middleware!");
-};
+// /**Custom middleware fucntion */
+// const errorMiddleware = (req, res, next) => {
+//   throw new Error("From my middleware!");
+// };
 
-app.post(
-  "/upload",
-  errorMiddleware,
-  async (req, res) => {
-    res.send();
-  },
-  /**Xu ly custom middleware fucntion */
-  (err, req, res, next) => {
-    res.status(400).send({ error: err.message });
-  }
-);
+// app.post(
+//   "/upload",
+//   errorMiddleware,
+//   async (req, res) => {
+//     res.send();
+//   },
+//   /**Xu ly custom middleware fucntion */
+//   (err, req, res, next) => {
+//     res.status(400).send({ error: err.message });
+//   }
+// );

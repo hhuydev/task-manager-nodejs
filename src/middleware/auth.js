@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
     /**Thêm {authoriazation: Bearer ...} bên postman */
     const token = req.header("Authorization").replace("Bearer ", "");
     /**Decode token dể lấy thông tin validate */
-    const decoded = jwt.verify(token, "thisissecretkey");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     /**Tìm user thông qua token decoded*/
     const user = await User.findOne({
       _id: decoded._id,

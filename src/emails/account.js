@@ -1,7 +1,6 @@
 const sgMail = require("@sendgrid/mail");
-const sendGridAPIKey =
-  "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";
-sgMail.setApiKey(sendGridAPIKey);
+
+sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
 const sendWelcomeEmail = (email, name) => {
   sgMail.send({
@@ -20,5 +19,4 @@ const sendCancleEmail = (email, name) => {
     text: `Thanks ${name}, see you!`,
   });
 };
-module.e;
 module.exports = { sendWelcomeEmail, sendCancleEmail };
