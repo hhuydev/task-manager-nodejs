@@ -89,3 +89,35 @@ test("Should delete user by Authenticated user", async () => {
 test("Should not delete user by Unauthenticated user", async () => {
   await request(app).delete("/users/me").send().expect(401);
 });
+
+test("Should upload user img", async () => {
+  await request(app)
+    .post("/users/me/avatar")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .attach("avatar", "Testing/fixtures/profile-pic.jpg")
+    .expect(200);
+  const user = await User.findById(userOne._id);
+  /**So sánh reference type trong jest */
+  // expect({}).toEqual({});
+
+  /**So sánh gần đùng kiểu dữ liệu avatar dc lưu dưới dạng nhị phân */
+  expect(user.avatar).toEqual(expect.any(Buffer));
+});
+
+test("Should update valid user fields", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ name: "huy" })
+    .expect(200);
+  const user = await User.findById(userOne._id);
+  expect(user.name).toEqual("huy");
+});
+
+test("Should not update invalid user fields", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ location: "vn" })
+    .expect(404);
+});
