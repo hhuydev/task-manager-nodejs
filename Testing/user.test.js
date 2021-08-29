@@ -1,28 +1,10 @@
 const request = require("supertest");
-const mongoose = require("mongoose");
 const app = require("../src/app");
-const jwt = require("jsonwebtoken");
 const User = require("../src/models/user");
-
-const userOneId = new mongoose.Types.ObjectId();
-
-const userOne = {
-  _id: userOneId,
-  name: "dang phuoc",
-  email: "phuoc@gmail.com",
-  password: "123456aa",
-  tokens: [
-    {
-      token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET_KEY),
-    },
-  ],
-};
+const { userOne, userOneId, setUpDBTest } = require("./fixtures/dbTest");
 
 /**Hàm này thực hiện trước các test case*/
-beforeEach(async () => {
-  await User.deleteMany();
-  await new User(userOne).save();
-});
+beforeEach(setUpDBTest);
 
 test("Should create user and return status 201", async () => {
   const respone = await request(app)
